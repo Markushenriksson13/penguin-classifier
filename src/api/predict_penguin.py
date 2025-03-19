@@ -40,9 +40,9 @@ def make_prediction(penguin_data):
     prediction = model.predict(features_scaled)[0]
     probabilities = model.predict_proba(features_scaled)[0]
     
-    return prediction, max(probabilities)
+    return prediction, probabilities  # Return the full probabilities array
 
-def save_prediction(penguin_data, prediction, probability):
+def save_prediction(penguin_data, prediction, probabilities):
     """Save prediction to a JSON file for GitHub Pages"""
     import os
     
@@ -53,7 +53,12 @@ def save_prediction(penguin_data, prediction, probability):
     result = {
         'date': datetime.now().strftime('%Y-%m-%d'),
         'prediction': prediction,
-        'probability': float(probability * 100),
+        'probability': float(max(probabilities) * 100),
+        'species_probabilities': {
+            'Adelie': float(probabilities[0] * 100),
+            'Chinstrap': float(probabilities[1] * 100),
+            'Gentoo': float(probabilities[2] * 100)
+        },
         'measurements': penguin_data
     }
     
@@ -71,13 +76,16 @@ def main():
         return
     
     # Make prediction
-    prediction, probability = make_prediction(penguin_data)
+    prediction, probabilities = make_prediction(penguin_data)
     
     # Save results
-    save_prediction(penguin_data, prediction, probability)
+    save_prediction(penguin_data, prediction, probabilities)
     
-    print(f"Prediction made: {'Adelie' if prediction else 'Not Adelie'} "
-          f"(confidence: {probability:.2f})")
+    print(f"Prediction made: {prediction}")
+    print(f"Probabilities:")
+    print(f"  Adelie: {probabilities[0]*100:.2f}%")
+    print(f"  Chinstrap: {probabilities[1]*100:.2f}%")
+    print(f"  Gentoo: {probabilities[2]*100:.2f}%")
 
 if __name__ == '__main__':
     main()

@@ -2,6 +2,11 @@
   "date": "2025-03-19",
   "prediction": "Adelie",
   "probability": 50.0,
+  "species_probabilities": {
+    "Adelie": 50.0,
+    "Chinstrap": 25.0,
+    "Gentoo": 25.0
+  },
   "measurements": {
     "bill_length_mm": 44.02125281740061,
     "bill_depth_mm": 17.225737253195568,
