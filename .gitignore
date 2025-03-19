@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# IDE
+.vscode/
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Model files
+*.pkl
+*.h5
+
+# Logs
+*.log
+
+# Local development settings
+.env
+
+# System Files
+.DS_Store
+Thumbs.db
