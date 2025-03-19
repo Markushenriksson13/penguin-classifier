@@ -28,19 +28,22 @@ try:
     
     # Make prediction
     prediction = model.predict(features_scaled)[0]
-    probability = model.predict_proba(features_scaled)[0]
+    probabilities = model.predict_proba(features_scaled)[0]
     
     # Create result dictionary
     result = {
         'date': datetime.now().strftime('%Y-%m-%d'),
         'prediction': prediction,
-        'probability': float(max(probability) * 100),
+        'probability': float(max(probabilities) * 100),  # Changed from probability to probabilities
         'measurements': penguin_data
     }
     
     print("\nToday's Penguin Analysis:")
     print(f"Predicted Species: {prediction}")
-    print(f"Confidence: {max(probability)*100:.2f}%")
+    print("\nProbabilities for each species:")
+    for species, prob in zip(model.classes_, probabilities):
+        print(f"{species}: {prob*100:.2f}%")
+    print(f"Confidence: {max(probabilities)*100:.2f}%")  # Changed from probability to probabilities
     print("\nMeasurements:")
     for key, value in penguin_data.items():
         print(f"{key}: {value}")
