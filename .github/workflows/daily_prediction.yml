@@ -23,12 +23,19 @@ jobs:
         pip install requests numpy pandas scikit-learn joblib seaborn
     
     - name: Run prediction
-      run: python src/api/predict_penguin.py
+      run: python src/model/predict_penguin.py
     
     - name: Commit and push if changes
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add predictions.json
+        git add predictions/latest_prediction.json
+        git add docs/index.html
         git commit -m "Update predictions" || exit 0
         git push
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
