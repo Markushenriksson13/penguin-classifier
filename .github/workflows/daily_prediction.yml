@@ -26,9 +26,10 @@ jobs:
       run: |
         mkdir -p predictions
         mkdir -p docs
+        rm -rf src/model/predictions  # Remove the duplicate predictions directory
     
     - name: Run prediction
-      run: python src/model/predict_penguin.py
+      run: python src/api/predict_penguin.py
     
     - name: Commit and push if changes
       run: |

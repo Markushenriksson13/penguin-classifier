@@ -17,10 +17,15 @@ def fetch_penguin_data():
 
 def make_prediction(penguin_data):
     """Make prediction using the trained model"""
+    import os
+    
+    # Get the correct path to the models directory
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    models_dir = os.path.join(base_dir, 'src', 'model', 'models')
+    
     # Load the model and preprocessing objects
-    scaler = joblib.load('models/scaler.joblib')
-    selector = joblib.load('models/selector.joblib')
-    model = joblib.load('models/penguin_classifier.joblib')
+    scaler = joblib.load(os.path.join(models_dir, 'scaler.joblib'))
+    model = joblib.load(os.path.join(models_dir, 'penguin_classifier.joblib'))
     
     # Prepare the features
     features = np.array([[penguin_data['bill_length_mm'],
@@ -28,27 +33,35 @@ def make_prediction(penguin_data):
                          penguin_data['flipper_length_mm'],
                          penguin_data['body_mass_g']]])
     
-    # Scale and select features
+    # Scale features
     features_scaled = scaler.transform(features)
-    features_selected = selector.transform(features_scaled)
     
     # Make prediction
-    prediction = model.predict(features_selected)[0]
-    probability = model.predict_proba(features_selected)[0][1]
+    prediction = model.predict(features_scaled)[0]
+    probabilities = model.predict_proba(features_scaled)[0]
     
-    return prediction, probability
+    return prediction, max(probabilities)
 
 def save_prediction(penguin_data, prediction, probability):
     """Save prediction to a JSON file for GitHub Pages"""
+    import os
+    
+    # Get the correct path to the predictions directory
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    predictions_dir = os.path.join(base_dir, 'predictions')
+    
     result = {
-        'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'measurements': penguin_data,
-        'is_adelie': bool(prediction),
-        'confidence': float(probability)
+        'date': datetime.now().strftime('%Y-%m-%d'),
+        'prediction': prediction,
+        'probability': float(probability * 100),
+        'measurements': penguin_data
     }
     
+    # Create predictions directory if it doesn't exist
+    os.makedirs(predictions_dir, exist_ok=True)
+    
     # Save to a file that GitHub Pages can serve
-    with open('predictions.json', 'w') as f:
+    with open(os.path.join(predictions_dir, 'latest_prediction.json'), 'w') as f:
         json.dump(result, f, indent=2)
 
 def main():
