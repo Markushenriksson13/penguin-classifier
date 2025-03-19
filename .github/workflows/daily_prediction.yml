@@ -22,6 +22,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests numpy pandas scikit-learn joblib seaborn
     
+    - name: Create directories
+      run: |
+        mkdir -p predictions
+        mkdir -p docs
+    
     - name: Run prediction
       run: python src/model/predict_penguin.py
     

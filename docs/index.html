@@ -24,7 +24,7 @@
         <p>Loading latest prediction...</p>
     </div>
     <script>
-        fetch('../predictions/latest_prediction.json')
+        fetch('/penguin-classifier-1/predictions/latest_prediction.json')
             .then(response => response.json())
             .then(data => {
                 const predDiv = document.getElementById('latest-prediction');
