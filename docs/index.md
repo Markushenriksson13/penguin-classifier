@@ -11,11 +11,11 @@ layout: default
 document.addEventListener('DOMContentLoaded', function() {
   const predDiv = document.getElementById('prediction-container');
   
-  // Use a relative path that works with GitHub Pages
-  fetch('/penguin-classifier-1/predictions/latest_prediction.json')
+  // Try using the GitHub Pages URL directly
+  fetch('https://markushenriksson13.github.io/penguin-classifier-1/predictions/latest_prediction.json')
     .then(response => {
       if (!response.ok) {
-        // Fall back to direct GitHub raw content URL
+        // Fall back to raw GitHub content
         return fetch('https://raw.githubusercontent.com/Markushenriksson13/penguin-classifier-1/main/predictions/latest_prediction.json')
           .then(response2 => {
             if (!response2.ok) {
