@@ -15,17 +15,21 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('https://markushenriksson13.github.io/penguin-classifier-1/predictions/latest_prediction.json')
     .then(response => {
       if (!response.ok) {
-        // Fall back to raw GitHub content
-        return fetch('https://raw.githubusercontent.com/Markushenriksson13/penguin-classifier-1/main/predictions/latest_prediction.json')
-          .then(response2 => {
-            if (!response2.ok) {
-              throw new Error('Failed to load prediction data from all sources');
+        // Try using the correct GitHub repository
+        fetch('https://raw.githubusercontent.com/Markushenriksson13/penguin-classifier/main/predictions/latest_prediction.json')
+          .then(response => {
+            if (!response.ok) {
+              // Fall back to local repository name
+              return fetch('https://raw.githubusercontent.com/Markushenriksson13/penguin-classifier-1/main/predictions/latest_prediction.json')
+                .then(response2 => {
+                  if (!response2.ok) {
+                    throw new Error('Failed to load prediction data from all sources');
+                  }
+                  return response2.json();
+                });
             }
-            return response2.json();
-          });
-      }
-      return response.json();
-    })
+            return response.json();
+          })
     .then(data => {
       predDiv.innerHTML = `
         <h2>Today's Penguin (${data.date})</h2>
