@@ -11,11 +11,12 @@ layout: default
 document.addEventListener('DOMContentLoaded', function() {
   const predDiv = document.getElementById('prediction-container');
   
-  // Read from GitHub raw content
-  fetch('https://raw.githubusercontent.com/Markushenriksson13/penguin-classifier-1/main/predictions/latest_prediction.json')
+  // Use a relative path that works with GitHub Pages
+  fetch('/penguin-classifier-1/predictions/latest_prediction.json')
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to load prediction data');
+        // Fall back to local file if GitHub Pages path fails
+        return fetch('../predictions/latest_prediction.json');
       }
       return response.json();
     })
