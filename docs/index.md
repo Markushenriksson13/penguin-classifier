@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const predDiv = document.getElementById('prediction-container');
   
   // Try using the GitHub Pages URL directly
-  fetch('https://markushenriksson13.github.io/penguin-classifier-1/predictions/latest_prediction.json')
+  fetch('https://markushenriksson13.github.io/penguin-classifier/predictions/latest_prediction.json')
     .then(response => {
       if (!response.ok) {
         // Try using the correct GitHub repository
