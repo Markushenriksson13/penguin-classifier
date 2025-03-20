@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('/penguin-classifier-1/predictions/latest_prediction.json')
     .then(response => {
       if (!response.ok) {
+        // Fall back to direct GitHub raw content URL
+        return fetch('https://raw.githubusercontent.com/Markushenriksson13/penguin-classifier-1/main/predictions/latest_prediction.json');
+      }
+      return response.json();
+    })
+    .then(response => {
+      if (!response.ok) {
         // Fall back to local file if GitHub Pages path fails
         return fetch('../predictions/latest_prediction.json');
       }
