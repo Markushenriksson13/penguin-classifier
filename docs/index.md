@@ -11,9 +11,14 @@ layout: default
 document.addEventListener('DOMContentLoaded', function() {
   const predDiv = document.getElementById('prediction-container');
   
-  // Update the fetch URL to use the GitHub Pages path
-  fetch('/penguin-classifier-1/predictions/latest_prediction.json')
-    .then(response => response.json())
+  // Read directly from the local JSON file
+  fetch('../predictions/latest_prediction.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to load prediction data');
+      }
+      return response.json();
+    })
     .then(data => {
       predDiv.innerHTML = `
         <h2>Today's Penguin (${data.date})</h2>
