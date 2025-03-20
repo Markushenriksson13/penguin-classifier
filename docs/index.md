@@ -11,8 +11,8 @@ layout: default
 document.addEventListener('DOMContentLoaded', function() {
   const predDiv = document.getElementById('prediction-container');
   
-  // Update the fetch URL to use relative path
-  fetch('../predictions/latest_prediction.json')
+  // Update the fetch URL to use the GitHub Pages path
+  fetch('/penguin-classifier-1/predictions/latest_prediction.json')
     .then(response => response.json())
     .then(data => {
       predDiv.innerHTML = `
